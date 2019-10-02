@@ -123,7 +123,7 @@ _DOWNLOAD(){
 	cd "${FOLDER}"
 	
 	[[  -e "${FOLDER_NODE}" ]] && rm -rf "${FOLDER_NODE}"
-	wget --no-check-certificate "https://nodejs.org/dist/v${NEW_VER_NODE}/node-v${NEW_VER_NODE}-linux-x64.tar.xz"
+	wget --no-check-certificate "https://nodejs.org/dist/node-latest.tar.gz"
 	[[ ! -e "node-v${NEW_VER_NODE}-linux-x64.tar.xz" ]] && echo -e "${ERROR} 依赖 Node 压缩包下载失败！" && _INSTALLATION_FAILURE_CLEANUP
 	xz -d "node-v${NEW_VER_NODE}-linux-x64.tar.xz"
 	[[ ! -e "node-v${NEW_VER_NODE}-linux-x64.tar" ]] && echo -e "${ERROR} 依赖 Node 压缩包解压失败（可能是 压缩包损坏 或者 没有安装解压工具 xz）！" && _INSTALLATION_FAILURE_CLEANUP
