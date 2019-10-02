@@ -65,6 +65,10 @@ _CHECK_INFO(){
 		fi
 	elif [[ "${1}" == "PID" ]]; then
 		PID=$(ps -ef| grep "${NAME_PID}"| grep -v "grep" | grep -v "init.d" |grep -v "service" |awk '{print $2}')
+	elif [[ "${1}" == "NEW_VER_NODE" ]]; then
+		NEW_VER_NODE=$(wget -qO- https://nodejs.org/en/download/| grep "Latest LTS Version: "| awk -F '<strong>' '{print $2}'| awk -F '</strong>' '{print $1}')
+		[[ -z "${NEW_VER_NODE}" ]] && echo -e "${ERROR} Node 最新版本获取失败！" && exit 1
+		echo -e "${INFO} 检测到 Node 最新版本为 [ ${NEW_VER_NODE} ]"
 	elif [[ "${1}" == "IPV4" ]]; then
 		IPV4=$(wget -qO- -4 -t1 -T2 ipinfo.io/ip)
 		if [[ -z "${IPV4}" ]]; then
@@ -123,7 +127,7 @@ _DOWNLOAD(){
 	cd "${FOLDER}"
 	
 	[[  -e "${FOLDER_NODE}" ]] && rm -rf "${FOLDER_NODE}"
-	wget --no-check-certificate "https://nodejs.org/dist/node-latest.tar.gz"
+	wget --no-check-certificate "https://nodejs.org/dist/v${NEW_VER_NODE}/node-v${NEW_VER_NODE}-linux-x64.tar.xz"
 	[[ ! -e "node-v${NEW_VER_NODE}-linux-x64.tar.xz" ]] && echo -e "${ERROR} 依赖 Node 压缩包下载失败！" && _INSTALLATION_FAILURE_CLEANUP
 	xz -d "node-v${NEW_VER_NODE}-linux-x64.tar.xz"
 	[[ ! -e "node-v${NEW_VER_NODE}-linux-x64.tar" ]] && echo -e "${ERROR} 依赖 Node 压缩包解压失败（可能是 压缩包损坏 或者 没有安装解压工具 xz）！" && _INSTALLATION_FAILURE_CLEANUP
