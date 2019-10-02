@@ -65,10 +65,6 @@ _CHECK_INFO(){
 		fi
 	elif [[ "${1}" == "PID" ]]; then
 		PID=$(ps -ef| grep "${NAME_PID}"| grep -v "grep" | grep -v "init.d" |grep -v "service" |awk '{print $2}')
-	elif [[ "${1}" == "NEW_VER_NODE" ]]; then
-		NEW_VER_NODE=$(wget -qO- https://nodejs.org/en/download/| grep "Latest LTS Version"| awk -F '<strong>' '{print $2}'| awk -F '</strong>' '{print $1}')
-		[[ -z "${NEW_VER_NODE}" ]] && echo -e "${ERROR} Node 最新版本获取失败！" && exit 1
-		echo -e "${INFO} 检测到 Node 最新版本为 [ ${NEW_VER_NODE} ]"
 	elif [[ "${1}" == "IPV4" ]]; then
 		IPV4=$(wget -qO- -4 -t1 -T2 ipinfo.io/ip)
 		if [[ -z "${IPV4}" ]]; then
